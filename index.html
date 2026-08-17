@@ -1,0 +1,1477 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+    <title>The Gaming Hub · Neon</title>
+    <!-- Font Awesome 6 (free) -->
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css" />
+    <!-- Google Font for better neon look -->
+    <link href="https://fonts.googleapis.com/css2?family=Orbitron:wght@400;700;800;900&display=swap" rel="stylesheet" />
+    <style>
+        /* ---------- RESET & BASE ---------- */
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            background: #0a0a0a;
+            font-family: 'Orbitron', 'Segoe UI', 'Poppins', system-ui, sans-serif;
+            min-height: 100vh;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            padding: 1.5rem;
+            overflow-x: hidden;
+        }
+
+        /* ---------- ANIMATED BACKGROUND (particles) ---------- */
+        .bg-particles {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            z-index: 0;
+            pointer-events: none;
+            overflow: hidden;
+        }
+
+        .particle {
+            position: absolute;
+            background: rgba(255, 0, 0, 0.3);
+            border-radius: 50%;
+            animation: floatParticle linear infinite;
+            box-shadow: 0 0 20px rgba(255, 0, 0, 0.2);
+        }
+
+        .particle:nth-child(1) { width: 4px; height: 4px; left: 10%; animation-duration: 18s; animation-delay: 0s; }
+        .particle:nth-child(2) { width: 6px; height: 6px; left: 20%; animation-duration: 22s; animation-delay: 2s; }
+        .particle:nth-child(3) { width: 3px; height: 3px; left: 35%; animation-duration: 16s; animation-delay: 4s; }
+        .particle:nth-child(4) { width: 8px; height: 8px; left: 50%; animation-duration: 25s; animation-delay: 1s; }
+        .particle:nth-child(5) { width: 5px; height: 5px; left: 65%; animation-duration: 20s; animation-delay: 3s; }
+        .particle:nth-child(6) { width: 4px; height: 4px; left: 78%; animation-duration: 19s; animation-delay: 5s; }
+        .particle:nth-child(7) { width: 7px; height: 7px; left: 88%; animation-duration: 23s; animation-delay: 2s; }
+        .particle:nth-child(8) { width: 5px; height: 5px; left: 15%; animation-duration: 21s; animation-delay: 6s; }
+        .particle:nth-child(9) { width: 3px; height: 3px; left: 45%; animation-duration: 17s; animation-delay: 0s; }
+        .particle:nth-child(10) { width: 6px; height: 6px; left: 72%; animation-duration: 24s; animation-delay: 4s; }
+        .particle:nth-child(11) { width: 4px; height: 4px; left: 92%; animation-duration: 20s; animation-delay: 7s; }
+        .particle:nth-child(12) { width: 5px; height: 5px; left: 5%; animation-duration: 26s; animation-delay: 3s; }
+
+        @keyframes floatParticle {
+            0% { transform: translateY(100vh) scale(0); opacity: 0; }
+            10% { opacity: 1; }
+            90% { opacity: 1; }
+            100% { transform: translateY(-10vh) scale(1); opacity: 0; }
+        }
+
+        /* ---------- GLITCH OVERLAY ---------- */
+        .glitch-overlay {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            pointer-events: none;
+            z-index: 999;
+            opacity: 0;
+            transition: opacity 0.05s;
+        }
+
+        .glitch-overlay.active {
+            opacity: 1;
+        }
+
+        .glitch-lines {
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: repeating-linear-gradient(
+                0deg,
+                transparent,
+                transparent 2px,
+                rgba(255, 0, 0, 0.03) 2px,
+                rgba(255, 0, 0, 0.03) 4px
+            );
+            animation: scanlines 0.1s linear infinite;
+        }
+
+        @keyframes scanlines {
+            0% { transform: translateY(0); }
+            100% { transform: translateY(4px); }
+        }
+
+        .glitch-vertical-line {
+            position: absolute;
+            top: -10%;
+            width: 2px;
+            background: rgba(255, 0, 0, 0.15);
+            box-shadow: 
+                0 0 10px rgba(255, 0, 0, 0.1),
+                0 0 20px rgba(255, 0, 0, 0.05);
+            animation: verticalGlitchDown 0.8s ease-in-out forwards;
+        }
+
+        .glitch-vertical-line::before {
+            content: '';
+            position: absolute;
+            top: -20px;
+            left: -15px;
+            width: 32px;
+            height: calc(100% + 40px);
+            background: rgba(255, 0, 0, 0.02);
+            filter: blur(8px);
+            backdrop-filter: blur(4px);
+            border-radius: 50%;
+        }
+
+        @keyframes verticalGlitchDown {
+            0% { 
+                transform: translateY(-10%) scaleY(0.5);
+                opacity: 0;
+            }
+            10% { 
+                opacity: 1;
+            }
+            90% { 
+                opacity: 1;
+            }
+            100% { 
+                transform: translateY(110%) scaleY(1);
+                opacity: 0;
+            }
+        }
+
+        .glitch-bar {
+            position: absolute;
+            left: 0;
+            width: 100%;
+            height: 3px;
+            background: rgba(255, 0, 0, 0.15);
+            box-shadow: 0 0 20px rgba(255, 0, 0, 0.1), 0 0 40px rgba(255, 0, 0, 0.05);
+            animation: glitchBar 0.3s ease-in-out;
+        }
+
+        @keyframes glitchBar {
+            0% { opacity: 0; transform: translateX(-10%); }
+            20% { opacity: 1; }
+            80% { opacity: 1; }
+            100% { opacity: 0; transform: translateX(10%); }
+        }
+
+        .glitch-color {
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: rgba(255, 0, 0, 0.02);
+            mix-blend-mode: screen;
+            animation: colorGlitch 0.15s ease-in-out;
+        }
+
+        @keyframes colorGlitch {
+            0% { opacity: 0; }
+            20% { opacity: 1; }
+            80% { opacity: 1; }
+            100% { opacity: 0; }
+        }
+
+        .glitch-shake {
+            animation: shake 0.15s ease-in-out;
+        }
+
+        @keyframes shake {
+            0% { transform: translate(0, 0); }
+            20% { transform: translate(-3px, 2px); }
+            40% { transform: translate(3px, -2px); }
+            60% { transform: translate(-2px, 3px); }
+            80% { transform: translate(2px, -3px); }
+            100% { transform: translate(0, 0); }
+        }
+
+        /* ---------- FLYING CONTROLLER ---------- */
+        .flying-controller {
+            position: fixed;
+            font-size: 3.5rem;
+            color: #ff0000;
+            text-shadow: 
+                0 0 20px rgba(255, 0, 0, 0.4),
+                0 0 40px rgba(255, 0, 0, 0.2),
+                0 0 60px rgba(255, 0, 0, 0.1);
+            pointer-events: none;
+            z-index: 1000;
+            animation: flyController 2.5s ease-in-out forwards;
+        }
+
+        @keyframes flyController {
+            0% { 
+                opacity: 0;
+                transform: scale(0.5) rotate(0deg);
+            }
+            10% {
+                opacity: 1;
+                transform: scale(1.2) rotate(180deg);
+            }
+            30% {
+                transform: scale(1) rotate(360deg);
+            }
+            60% {
+                transform: scale(1.1) rotate(720deg);
+            }
+            90% {
+                opacity: 1;
+                transform: scale(1) rotate(900deg);
+            }
+            100% { 
+                opacity: 0;
+                transform: scale(0.8) rotate(1080deg);
+            }
+        }
+
+        .controller-trail {
+            position: fixed;
+            pointer-events: none;
+            z-index: 999;
+            opacity: 0.3;
+            filter: blur(4px);
+        }
+
+        /* ---------- MAIN CARD ---------- */
+        .main-card {
+            position: relative;
+            z-index: 1;
+            max-width: 1000px;
+            width: 100%;
+            background: rgba(10, 10, 10, 0.85);
+            backdrop-filter: blur(16px);
+            -webkit-backdrop-filter: blur(16px);
+            border-radius: 3.5rem;
+            padding: 3rem 2.5rem 4rem;
+            border: 1px solid rgba(255, 0, 0, 0.15);
+            box-shadow: 0 30px 60px rgba(0, 0, 0, 0.9), 0 0 80px rgba(255, 0, 0, 0.08);
+            text-align: center;
+            transition: box-shadow 0.3s;
+        }
+
+        .main-card:hover {
+            box-shadow: 0 30px 70px rgba(0, 0, 0, 0.95), 0 0 120px rgba(255, 0, 0, 0.12);
+        }
+
+        /* ---------- PAGE CONTAINER ---------- */
+        .page {
+            display: none;
+            animation: fadeIn 0.5s ease;
+        }
+
+        .page.active {
+            display: block;
+        }
+
+        @keyframes fadeIn {
+            0% { opacity: 0; transform: translateY(20px); }
+            100% { opacity: 1; transform: translateY(0); }
+        }
+
+        /* ---------- LOGO (enhanced with neon ring) ---------- */
+        .logo-wrapper {
+            display: flex;
+            justify-content: center;
+            margin-bottom: 1.8rem;
+            position: relative;
+        }
+
+        .logo-ring {
+            position: relative;
+            width: 140px;
+            height: 140px;
+            border-radius: 50%;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            animation: pulseRing 3s ease-in-out infinite;
+        }
+
+        .logo-ring::before {
+            content: '';
+            position: absolute;
+            inset: -8px;
+            border-radius: 50%;
+            background: conic-gradient(from 0deg, #ff0000, #cc0000, #ff0000, #aa0000, #ff0000);
+            padding: 3px;
+            -webkit-mask: radial-gradient(farthest-side, transparent calc(100% - 4px), #fff calc(100% - 3px));
+            mask: radial-gradient(farthest-side, transparent calc(100% - 4px), #fff calc(100% - 3px));
+            animation: spinRing 6s linear infinite;
+            box-shadow: 0 0 40px rgba(255, 0, 0, 0.3), 0 0 80px rgba(255, 0, 0, 0.1);
+        }
+
+        .logo-ring::after {
+            content: '';
+            position: absolute;
+            inset: -4px;
+            border-radius: 50%;
+            background: radial-gradient(circle at 30% 30%, rgba(255, 0, 0, 0.15), transparent 70%);
+            filter: blur(8px);
+            z-index: 0;
+        }
+
+        @keyframes spinRing {
+            0% { transform: rotate(0deg); }
+            100% { transform: rotate(360deg); }
+        }
+
+        @keyframes pulseRing {
+            0%, 100% { transform: scale(1); }
+            50% { transform: scale(1.03); }
+        }
+
+        .logo-img {
+            width: 130px;
+            height: 130px;
+            border-radius: 50%;
+            object-fit: cover;
+            border: 2px solid rgba(255, 255, 255, 0.1);
+            box-shadow: inset 0 0 30px rgba(255, 0, 0, 0.2);
+            position: relative;
+            z-index: 1;
+            transition: transform 0.3s;
+            background: #0a0a0a;
+        }
+
+        .logo-img:hover {
+            transform: scale(1.05) rotate(-3deg);
+        }
+
+        /* ---------- NEON TEXT (RED & BLACK) ---------- */
+        .neon-title {
+            font-size: 4.5rem;
+            font-weight: 900;
+            letter-spacing: 6px;
+            text-transform: uppercase;
+            color: #fff;
+            background: linear-gradient(90deg, #ff0000, #cc0000, #ff0000, #aa0000);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            background-size: 300% 100%;
+            animation: gradientShift 4s ease-in-out infinite, flicker 3s infinite alternate;
+            margin-bottom: 0.3rem;
+            font-family: 'Orbitron', sans-serif;
+            filter: drop-shadow(0 0 20px rgba(255, 0, 0, 0.3)) drop-shadow(0 0 40px rgba(255, 0, 0, 0.2));
+        }
+
+        @keyframes gradientShift {
+            0% { background-position: 0% 50%; }
+            50% { background-position: 100% 50%; }
+            100% { background-position: 0% 50%; }
+        }
+
+        @keyframes flicker {
+            0%, 18%, 22%, 25%, 53%, 57%, 100% {
+                filter: drop-shadow(0 0 20px rgba(255, 0, 0, 0.4)) drop-shadow(0 0 40px rgba(255, 0, 0, 0.3));
+            }
+            20%, 24%, 55% {
+                filter: drop-shadow(0 0 10px rgba(255, 0, 0, 0.2)) drop-shadow(0 0 20px rgba(255, 0, 0, 0.1));
+            }
+        }
+
+        .neon-sub {
+            font-size: 1.2rem;
+            font-weight: 400;
+            letter-spacing: 6px;
+            color: #ff3333;
+            text-shadow: 
+                0 0 10px rgba(255, 0, 0, 0.4),
+                0 0 30px rgba(255, 0, 0, 0.2),
+                0 0 60px rgba(255, 0, 0, 0.1);
+            margin-top: -0.2rem;
+            margin-bottom: 2.2rem;
+            text-transform: uppercase;
+            font-family: 'Orbitron', sans-serif;
+        }
+
+        .page-sub {
+            font-size: 1rem;
+            font-weight: 400;
+            letter-spacing: 8px;
+            color: rgba(255, 50, 50, 0.6);
+            text-shadow: 0 0 20px rgba(255, 0, 0, 0.2);
+            margin-bottom: 2.2rem;
+            text-transform: uppercase;
+            font-family: 'Orbitron', sans-serif;
+        }
+
+        /* ---------- DIVIDER ---------- */
+        .divider {
+            width: 80px;
+            height: 3px;
+            margin: 0 auto 2.2rem;
+            background: linear-gradient(90deg, transparent, #ff0000, #ff0000, #ff0000, transparent);
+            border-radius: 10px;
+            box-shadow: 0 0 20px rgba(255, 0, 0, 0.3);
+        }
+
+        /* ---------- TAGLINE ---------- */
+        .tagline {
+            font-size: 1.4rem;
+            font-weight: 400;
+            color: #ff3333;
+            text-shadow: 
+                0 0 10px rgba(255, 0, 0, 0.3),
+                0 0 30px rgba(255, 0, 0, 0.15);
+            max-width: 600px;
+            margin: 0 auto 2.8rem;
+            line-height: 1.6;
+            letter-spacing: 1px;
+            font-family: 'Orbitron', sans-serif;
+        }
+
+        .tagline i {
+            color: #ff0000;
+            margin: 0 6px;
+            text-shadow: 0 0 20px rgba(255, 0, 0, 0.4);
+        }
+
+        .tagline span {
+            color: #ff6666;
+            text-shadow: 0 0 15px rgba(255, 0, 0, 0.3);
+        }
+
+        /* ---------- CONTENT AREA ---------- */
+        .content-area {
+            color: #ff3333;
+            text-shadow: 0 0 10px rgba(255, 0, 0, 0.3);
+            font-size: 1.2rem;
+            line-height: 2;
+            max-width: 700px;
+            margin: 0 auto 2.5rem;
+            font-family: 'Orbitron', sans-serif;
+            min-height: 120px;
+            padding: 1.5rem;
+            border: 1px solid rgba(255, 0, 0, 0.05);
+            border-radius: 20px;
+            background: rgba(255, 0, 0, 0.02);
+        }
+
+        .content-area i {
+            color: #ff0000;
+            margin: 0 8px;
+            text-shadow: 0 0 20px rgba(255, 0, 0, 0.3);
+        }
+
+        .content-area p {
+            margin-bottom: 10px;
+        }
+
+        .content-area p:last-child {
+            margin-bottom: 0;
+        }
+
+        /* ---------- SOCIAL LINKS (Home page) ---------- */
+        .social-links {
+            display: flex;
+            justify-content: center;
+            gap: 1.8rem;
+            flex-wrap: wrap;
+            margin-bottom: 2.8rem;
+            min-height: 60px;
+        }
+
+        .social-link {
+            display: inline-flex;
+            align-items: center;
+            justify-content: center;
+            width: 60px;
+            height: 60px;
+            border-radius: 50%;
+            background: rgba(255, 255, 255, 0.03);
+            border: 1px solid rgba(255, 0, 0, 0.2);
+            color: #ff3333;
+            font-size: 1.6rem;
+            text-decoration: none;
+            transition: all 0.3s ease;
+            backdrop-filter: blur(4px);
+            box-shadow: 0 0 20px rgba(255, 0, 0, 0.1);
+            text-shadow: 0 0 20px rgba(255, 0, 0, 0.2);
+            cursor: pointer;
+        }
+
+        .social-link:hover {
+            transform: translateY(-6px) scale(1.08);
+            border-color: #ff0000;
+            color: #ff0000;
+            box-shadow: 0 0 30px rgba(255, 0, 0, 0.3), 0 0 60px rgba(255, 0, 0, 0.15);
+            background: rgba(255, 0, 0, 0.05);
+            text-shadow: 0 0 30px rgba(255, 0, 0, 0.6);
+        }
+
+        .social-link i {
+            transition: transform 0.2s;
+        }
+
+        .social-link:hover i {
+            transform: scale(1.1);
+        }
+
+        /* ---------- SOCIAL PAGES ---------- */
+        .social-page-links {
+            display: flex;
+            flex-direction: column;
+            gap: 1.2rem;
+            max-width: 500px;
+            margin: 0 auto 2.5rem;
+        }
+
+        .social-page-link {
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            gap: 1rem;
+            padding: 0.8rem 1.5rem;
+            border-radius: 60px;
+            background: rgba(255, 255, 255, 0.03);
+            border: 1px solid rgba(255, 0, 0, 0.15);
+            color: #ff3333;
+            font-size: 0.9rem;
+            font-weight: 400;
+            text-decoration: none;
+            transition: all 0.3s ease;
+            font-family: 'Orbitron', sans-serif;
+            text-shadow: 0 0 15px rgba(255, 0, 0, 0.2);
+            letter-spacing: 1px;
+        }
+
+        .social-page-link:hover {
+            transform: translateY(-3px) scale(1.02);
+            border-color: #ff0000;
+            color: #ff0000;
+            box-shadow: 0 0 30px rgba(255, 0, 0, 0.2), 0 0 60px rgba(255, 0, 0, 0.1);
+            background: rgba(255, 0, 0, 0.05);
+            text-shadow: 0 0 25px rgba(255, 0, 0, 0.4);
+        }
+
+        .social-page-link i {
+            font-size: 1.4rem;
+            color: #ff0000;
+            text-shadow: 0 0 20px rgba(255, 0, 0, 0.3);
+            min-width: 30px;
+        }
+
+        .social-page-link:hover i {
+            color: #ff3333;
+            text-shadow: 0 0 20px rgba(255, 0, 0, 0.3);
+        }
+
+        .social-page-link .link-label {
+            font-size: 0.7rem;
+            opacity: 0.5;
+            margin-left: auto;
+            letter-spacing: 2px;
+        }
+
+        .social-page-title {
+            font-size: 1.5rem;
+            font-weight: 700;
+            color: #ff3333;
+            text-shadow: 0 0 20px rgba(255, 0, 0, 0.3);
+            margin-bottom: 1.5rem;
+            font-family: 'Orbitron', sans-serif;
+        }
+
+        .social-page-title i {
+            margin-right: 12px;
+            color: #ff0000;
+        }
+
+        /* ---------- BUTTONS ---------- */
+        .btn-neon {
+            display: inline-block;
+            padding: 0.9rem 3rem;
+            font-size: 1.1rem;
+            font-weight: 700;
+            text-transform: uppercase;
+            letter-spacing: 4px;
+            color: #ff3333;
+            background: transparent;
+            border: 2px solid rgba(255, 0, 0, 0.4);
+            border-radius: 60px;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            text-decoration: none;
+            box-shadow: 0 0 30px rgba(255, 0, 0, 0.1);
+            backdrop-filter: blur(4px);
+            position: relative;
+            overflow: hidden;
+            font-family: 'Orbitron', sans-serif;
+            text-shadow: 0 0 20px rgba(255, 0, 0, 0.3);
+            margin: 0.5rem;
+        }
+
+        .btn-neon::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: -100%;
+            width: 100%;
+            height: 100%;
+            background: linear-gradient(90deg, transparent, rgba(255, 0, 0, 0.15), transparent);
+            transition: left 0.6s;
+        }
+
+        .btn-neon:hover::before {
+            left: 100%;
+        }
+
+        .btn-neon:hover {
+            border-color: #ff0000;
+            color: #ff0000;
+            box-shadow: 0 0 40px rgba(255, 0, 0, 0.3), 0 0 80px rgba(255, 0, 0, 0.12);
+            transform: scale(1.03);
+            background: rgba(255, 0, 0, 0.05);
+            text-shadow: 0 0 30px rgba(255, 0, 0, 0.6);
+        }
+
+        .btn-neon i {
+            color: #ff0000;
+            text-shadow: 0 0 20px rgba(255, 0, 0, 0.3);
+        }
+
+        .btn-neon:hover i {
+            color: #ff3333;
+            text-shadow: 0 0 20px rgba(255, 0, 0, 0.3);
+        }
+
+        .btn-group {
+            display: flex;
+            justify-content: center;
+            flex-wrap: wrap;
+            gap: 0.5rem;
+            margin-bottom: 1rem;
+        }
+
+        /* ---------- CONTRIBUTORS SECTION ---------- */
+        .contributors-section {
+            margin-top: 3rem;
+            padding-top: 2rem;
+            border-top: 1px solid rgba(255, 255, 255, 0.05);
+        }
+
+        .contributors-title {
+            font-size: 1rem;
+            font-weight: 400;
+            letter-spacing: 5px;
+            text-transform: uppercase;
+            color: rgba(255, 50, 50, 0.6);
+            text-shadow: 0 0 20px rgba(255, 0, 0, 0.2);
+            margin-bottom: 1.2rem;
+            font-family: 'Orbitron', sans-serif;
+        }
+
+        .contributors-title i {
+            color: #ff0000;
+            text-shadow: 0 0 20px rgba(255, 0, 0, 0.3);
+        }
+
+        .contributors-list {
+            display: flex;
+            justify-content: center;
+            flex-wrap: wrap;
+            gap: 1.2rem 2rem;
+        }
+
+        .contributor {
+            font-size: 0.95rem;
+            font-weight: 400;
+            color: #ff3333;
+            text-shadow: 0 0 15px rgba(255, 0, 0, 0.2);
+            letter-spacing: 1px;
+            transition: all 0.3s ease;
+            padding: 0.3rem 0.8rem;
+            border-radius: 20px;
+            border: 1px solid transparent;
+            font-family: 'Orbitron', sans-serif;
+        }
+
+        .contributor:hover {
+            color: #ff0000;
+            border-color: rgba(255, 0, 0, 0.2);
+            background: rgba(255, 0, 0, 0.05);
+            transform: translateY(-2px);
+            text-shadow: 0 0 25px rgba(255, 0, 0, 0.4);
+            box-shadow: 0 0 30px rgba(255, 0, 0, 0.05);
+        }
+
+        .contributor i {
+            color: #ff0000;
+            margin-right: 6px;
+            font-size: 0.8rem;
+            text-shadow: 0 0 15px rgba(255, 0, 0, 0.3);
+        }
+
+        /* ---------- FOOTER ---------- */
+        .footer-note {
+            margin-top: 2.5rem;
+            font-size: 0.8rem;
+            font-weight: 300;
+            color: rgba(255, 50, 50, 0.4);
+            text-shadow: 0 0 10px rgba(255, 0, 0, 0.1);
+            letter-spacing: 3px;
+            font-family: 'Orbitron', sans-serif;
+        }
+
+        .footer-note i {
+            color: rgba(255, 0, 0, 0.2);
+            text-shadow: 0 0 10px rgba(255, 0, 0, 0.1);
+        }
+
+        /* ---------- RESPONSIVE ---------- */
+        @media (max-width: 700px) {
+            .main-card {
+                padding: 2rem 1.5rem 3rem;
+                border-radius: 2.5rem;
+            }
+
+            .neon-title {
+                font-size: 2.6rem;
+                letter-spacing: 3px;
+            }
+
+            .neon-sub {
+                font-size: 0.9rem;
+                letter-spacing: 4px;
+            }
+
+            .logo-ring {
+                width: 110px;
+                height: 110px;
+            }
+
+            .logo-img {
+                width: 100px;
+                height: 100px;
+            }
+
+            .tagline {
+                font-size: 1.1rem;
+                padding: 0 0.5rem;
+            }
+
+            .social-links {
+                gap: 1.2rem;
+            }
+
+            .social-link {
+                width: 50px;
+                height: 50px;
+                font-size: 1.3rem;
+            }
+
+            .btn-neon {
+                padding: 0.7rem 1.5rem;
+                font-size: 0.8rem;
+                letter-spacing: 2px;
+            }
+
+            .contributors-list {
+                gap: 0.8rem 1.5rem;
+            }
+
+            .contributor {
+                font-size: 0.8rem;
+            }
+
+            .flying-controller {
+                font-size: 2.5rem !important;
+            }
+
+            .content-area {
+                font-size: 1rem;
+                padding: 1rem;
+            }
+
+            .social-page-link {
+                font-size: 0.8rem;
+                padding: 0.7rem 1.2rem;
+            }
+
+            .social-page-title {
+                font-size: 1.2rem;
+            }
+        }
+
+        @media (max-width: 450px) {
+            .neon-title {
+                font-size: 2rem;
+                letter-spacing: 2px;
+            }
+
+            .logo-ring {
+                width: 90px;
+                height: 90px;
+            }
+
+            .logo-img {
+                width: 80px;
+                height: 80px;
+            }
+
+            .tagline {
+                font-size: 0.95rem;
+            }
+
+            .flying-controller {
+                font-size: 2rem !important;
+            }
+
+            .content-area {
+                font-size: 0.85rem;
+                padding: 0.8rem;
+            }
+
+            .social-page-link {
+                font-size: 0.7rem;
+                padding: 0.6rem 1rem;
+            }
+        }
+    </style>
+</head>
+<body>
+
+    <!-- GLITCH OVERLAY -->
+    <div class="glitch-overlay" id="glitchOverlay">
+        <div class="glitch-lines"></div>
+    </div>
+
+    <!-- BACKGROUND PARTICLES -->
+    <div class="bg-particles">
+        <div class="particle"></div>
+        <div class="particle"></div>
+        <div class="particle"></div>
+        <div class="particle"></div>
+        <div class="particle"></div>
+        <div class="particle"></div>
+        <div class="particle"></div>
+        <div class="particle"></div>
+        <div class="particle"></div>
+        <div class="particle"></div>
+        <div class="particle"></div>
+        <div class="particle"></div>
+    </div>
+
+    <!-- MAIN CONTENT -->
+    <div class="main-card" id="mainCard">
+
+        <!-- LOGO with neon ring -->
+        <div class="logo-wrapper">
+            <div class="logo-ring">
+                <img
+                    class="logo-img"
+                    src="https://media.discordapp.net/attachments/1538660443894190080/1538660619929129111/image.png?ex=6a84259e&is=6a82d41e&hm=ae9b7add64e9bc9e7a45f4801e6c20a287e4bb5d94be9dac012d4f451d57f784&=&format=webp&quality=lossless"
+                    alt="The Gaming Hub logo"
+                    loading="lazy"
+                />
+            </div>
+        </div>
+
+        <!-- ==================== PAGE: HOME ==================== -->
+        <div class="page active" id="pageHome">
+            <h1 class="neon-title">The Gaming Hub</h1>
+            <p class="neon-sub"><i class="fas fa-bolt" style="margin-right: 10px;"></i> the ultimate gaming community <i class="fas fa-bolt" style="margin-left: 10px;"></i></p>
+
+            <div class="divider"></div>
+
+            <p class="tagline">
+                <i class="fas fa-gamepad"></i> 
+                a growing gaming community with great vibes! 
+                <i class="fas fa-fire"></i>
+                <br />
+                <span style="font-size: 0.9rem; letter-spacing: 2px; color: #ff6666; text-shadow: 0 0 15px rgba(255, 0, 0, 0.3);">
+                    made by @the.gamerz_ on discord
+                </span>
+            </p>
+
+            <!-- SOCIAL LINKS -->
+            <div class="social-links" id="socialLinks"></div>
+
+            <!-- NAVIGATION BUTTONS -->
+            <div class="btn-group">
+                <button class="btn-neon" onclick="switchPage('about')">
+                    <i class="fas fa-info-circle" style="margin-right: 10px;"></i> About
+                </button>
+                <button class="btn-neon" onclick="switchPage('notready')">
+                    <i class="fas fa-hourglass-half" style="margin-right: 10px;"></i> Not Ready to Join
+                </button>
+            </div>
+
+            <!-- CTA BUTTON -->
+            <a href="https://discord.gg/yJY2Mmp87" target="_blank" rel="noopener noreferrer" class="btn-neon" id="joinButton">
+                <i class="fas fa-star" style="margin-right: 10px;"></i> Join The Gaming Hub <i class="fas fa-star" style="margin-left: 10px;"></i>
+            </a>
+
+            <!-- CONTRIBUTORS -->
+            <div class="contributors-section">
+                <div class="contributors-title">
+                    <i class="fas fa-heart"></i>
+                    people who helped us
+                    <i class="fas fa-heart"></i>
+                </div>
+                <div class="contributors-list">
+                    <span class="contributor"><i class="fas fa-user"></i> @the.gamerz_</span>
+                    <span class="contributor"><i class="fas fa-user"></i> @zylan55</span>
+                    <span class="contributor"><i class="fas fa-user"></i> @somerobloxdevthatssooogood</span>
+                </div>
+            </div>
+
+            <div class="footer-note">
+                <i class="fas fa-circle" style="font-size: 0.4rem; vertical-align: middle; margin-right: 8px;"></i>
+                the gaming hub · 2026
+                <i class="fas fa-circle" style="font-size: 0.4rem; vertical-align: middle; margin-left: 8px;"></i>
+            </div>
+        </div>
+
+        <!-- ==================== PAGE: ABOUT ==================== -->
+        <div class="page" id="pageAbout">
+            <h1 class="neon-title">About Us</h1>
+            <p class="page-sub"><i class="fas fa-bolt" style="margin-right: 10px;"></i> who we are <i class="fas fa-bolt" style="margin-left: 10px;"></i></p>
+
+            <div class="divider"></div>
+
+            <div class="content-area">
+                <i class="fas fa-gamepad"></i>
+                <p>
+                    <i class="fas fa-star" style="color: #ff0000;"></i>
+                    Welcome to The Gaming Hub!
+                    <i class="fas fa-star" style="color: #ff0000;"></i>
+                </p>
+                <p>
+                    We are a gaming community that is all about having fun, meeting new people, and building lasting friendships. Whether you're a casual gamer or a competitive player, there's a place for you here!
+                </p>
+                <p>
+                    <i class="fas fa-fire" style="color: #ff3333;"></i>
+                    Join us for custom game nights, tournaments, and just hanging out with awesome people. The Gaming Hub is where gamers come together!
+                    <i class="fas fa-fire" style="color: #ff3333;"></i>
+                </p>
+            </div>
+
+            <!-- BACK BUTTON -->
+            <button class="btn-neon" onclick="switchPage('home')">
+                <i class="fas fa-arrow-left" style="margin-right: 10px;"></i> Back to Home
+            </button>
+
+            <div class="footer-note" style="margin-top: 2.5rem;">
+                <i class="fas fa-circle" style="font-size: 0.4rem; vertical-align: middle; margin-right: 8px;"></i>
+                the gaming hub · 2026
+                <i class="fas fa-circle" style="font-size: 0.4rem; vertical-align: middle; margin-left: 8px;"></i>
+            </div>
+        </div>
+
+        <!-- ==================== PAGE: NOT READY ==================== -->
+        <div class="page" id="pageNotReady">
+            <h1 class="neon-title">Not Ready to Join</h1>
+            <p class="page-sub"><i class="fas fa-bolt" style="margin-right: 10px;"></i> coming soon <i class="fas fa-bolt" style="margin-left: 10px;"></i></p>
+
+            <div class="divider"></div>
+
+            <div class="content-area">
+                <i class="fas fa-hourglass-half"></i>
+                <p>
+                    <i class="fas fa-clock" style="color: #ff0000;"></i>
+                    Not ready to join yet? That's totally fine! We value quality over quantity and want you to join when you're ready.
+                    <i class="fas fa-clock" style="color: #ff0000;"></i>
+                </p>
+                <p>
+                    Take your time and when you're ready, 
+                    <span style="color: #ff3333;">click the join button!</span>
+                </p>
+                <p>
+                    <i class="fas fa-rocket" style="color: #ff3333;"></i>
+                    We'll be here waiting for you!
+                    <i class="fas fa-rocket" style="color: #ff3333;"></i>
+                </p>
+            </div>
+
+            <!-- BACK BUTTON -->
+            <button class="btn-neon" onclick="switchPage('home')">
+                <i class="fas fa-arrow-left" style="margin-right: 10px;"></i> Back to Home
+            </button>
+
+            <div class="footer-note" style="margin-top: 2.5rem;">
+                <i class="fas fa-circle" style="font-size: 0.4rem; vertical-align: middle; margin-right: 8px;"></i>
+                the gaming hub · 2026
+                <i class="fas fa-circle" style="font-size: 0.4rem; vertical-align: middle; margin-left: 8px;"></i>
+            </div>
+        </div>
+
+        <!-- ==================== PAGE: DISCORD ==================== -->
+        <div class="page" id="pageDiscord">
+            <h1 class="neon-title">Discord</h1>
+            <p class="page-sub"><i class="fas fa-bolt" style="margin-right: 10px;"></i> join our community <i class="fas fa-bolt" style="margin-left: 10px;"></i></p>
+
+            <div class="divider"></div>
+
+            <div class="social-page-title">
+                <i class="fab fa-discord"></i> Our Discord Server
+            </div>
+
+            <div class="social-page-links">
+                <a href="https://discord.gg/yJY2Mmp87" target="_blank" rel="noopener noreferrer" class="social-page-link">
+                    <i class="fab fa-discord"></i>
+                    The Gaming Hub
+                    <span class="link-label">main</span>
+                </a>
+            </div>
+
+            <button class="btn-neon" onclick="switchPage('home')">
+                <i class="fas fa-arrow-left" style="margin-right: 10px;"></i> Back to Home
+            </button>
+
+            <div class="footer-note" style="margin-top: 2.5rem;">
+                <i class="fas fa-circle" style="font-size: 0.4rem; vertical-align: middle; margin-right: 8px;"></i>
+                the gaming hub · 2026
+                <i class="fas fa-circle" style="font-size: 0.4rem; vertical-align: middle; margin-left: 8px;"></i>
+            </div>
+        </div>
+
+        <!-- ==================== PAGE: TWITCH ==================== -->
+        <div class="page" id="pageTwitch">
+            <h1 class="neon-title">Twitch</h1>
+            <p class="page-sub"><i class="fas fa-bolt" style="margin-right: 10px;"></i> coming soon <i class="fas fa-bolt" style="margin-left: 10px;"></i></p>
+
+            <div class="divider"></div>
+
+            <div class="social-page-title">
+                <i class="fab fa-twitch"></i> Coming Soon
+            </div>
+
+            <div class="social-page-links">
+                <div class="social-page-link" style="cursor: default; opacity: 0.5;">
+                    <i class="fab fa-twitch"></i>
+                    Twitch coming soon!
+                    <span class="link-label">soon</span>
+                </div>
+            </div>
+
+            <button class="btn-neon" onclick="switchPage('home')">
+                <i class="fas fa-arrow-left" style="margin-right: 10px;"></i> Back to Home
+            </button>
+
+            <div class="footer-note" style="margin-top: 2.5rem;">
+                <i class="fas fa-circle" style="font-size: 0.4rem; vertical-align: middle; margin-right: 8px;"></i>
+                the gaming hub · 2026
+                <i class="fas fa-circle" style="font-size: 0.4rem; vertical-align: middle; margin-left: 8px;"></i>
+            </div>
+        </div>
+
+        <!-- ==================== PAGE: YOUTUBE ==================== -->
+        <div class="page" id="pageYouTube">
+            <h1 class="neon-title">YouTube</h1>
+            <p class="page-sub"><i class="fas fa-bolt" style="margin-right: 10px;"></i> coming soon <i class="fas fa-bolt" style="margin-left: 10px;"></i></p>
+
+            <div class="divider"></div>
+
+            <div class="social-page-title">
+                <i class="fab fa-youtube"></i> Coming Soon
+            </div>
+
+            <div class="social-page-links">
+                <div class="social-page-link" style="cursor: default; opacity: 0.5;">
+                    <i class="fab fa-youtube"></i>
+                    YouTube coming soon!
+                    <span class="link-label">soon</span>
+                </div>
+            </div>
+
+            <button class="btn-neon" onclick="switchPage('home')">
+                <i class="fas fa-arrow-left" style="margin-right: 10px;"></i> Back to Home
+            </button>
+
+            <div class="footer-note" style="margin-top: 2.5rem;">
+                <i class="fas fa-circle" style="font-size: 0.4rem; vertical-align: middle; margin-right: 8px;"></i>
+                the gaming hub · 2026
+                <i class="fas fa-circle" style="font-size: 0.4rem; vertical-align: middle; margin-left: 8px;"></i>
+            </div>
+        </div>
+
+        <!-- ==================== PAGE: TIKTOK ==================== -->
+        <div class="page" id="pageTikTok">
+            <h1 class="neon-title">TikTok</h1>
+            <p class="page-sub"><i class="fas fa-bolt" style="margin-right: 10px;"></i> coming soon <i class="fas fa-bolt" style="margin-left: 10px;"></i></p>
+
+            <div class="divider"></div>
+
+            <div class="social-page-title">
+                <i class="fab fa-tiktok"></i> Coming Soon
+            </div>
+
+            <div class="social-page-links">
+                <div class="social-page-link" style="cursor: default; opacity: 0.5;">
+                    <i class="fab fa-tiktok"></i>
+                    TikTok coming soon!
+                    <span class="link-label">soon</span>
+                </div>
+            </div>
+
+            <button class="btn-neon" onclick="switchPage('home')">
+                <i class="fas fa-arrow-left" style="margin-right: 10px;"></i> Back to Home
+            </button>
+
+            <div class="footer-note" style="margin-top: 2.5rem;">
+                <i class="fas fa-circle" style="font-size: 0.4rem; vertical-align: middle; margin-right: 8px;"></i>
+                the gaming hub · 2026
+                <i class="fas fa-circle" style="font-size: 0.4rem; vertical-align: middle; margin-left: 8px;"></i>
+            </div>
+        </div>
+
+    </div>
+
+    <script>
+        // ============================================================
+        //  SOUND EFFECTS
+        // ============================================================
+        class SoundEffects {
+            constructor() {
+                this.audioCtx = null;
+                this.initAudio();
+            }
+
+            initAudio() {
+                try {
+                    this.audioCtx = new (window.AudioContext || window.webkitAudioContext)();
+                } catch (e) {
+                    console.log('Web Audio API not supported');
+                }
+            }
+
+            playGlitchSound() {
+                if (!this.audioCtx) return;
+                try {
+                    const duration = 0.3;
+                    const bufferSize = this.audioCtx.sampleRate * duration;
+                    const buffer = this.audioCtx.createBuffer(1, bufferSize, this.audioCtx.sampleRate);
+                    const data = buffer.getChannelData(0);
+                    for (let i = 0; i < bufferSize; i++) {
+                        if (Math.random() < 0.05) {
+                            data[i] = (Math.random() * 2 - 1) * 0.8;
+                        } else {
+                            data[i] = (Math.random() * 2 - 1) * 0.2;
+                        }
+                    }
+                    const source = this.audioCtx.createBufferSource();
+                    source.buffer = buffer;
+                    const gainNode = this.audioCtx.createGain();
+                    gainNode.gain.setValueAtTime(0.3, this.audioCtx.currentTime);
+                    gainNode.gain.exponentialRampToValueAtTime(0.01, this.audioCtx.currentTime + duration);
+                    const distortion = this.audioCtx.createWaveShaper();
+                    distortion.curve = this.makeDistortionCurve(100);
+                    source.connect(distortion);
+                    distortion.connect(gainNode);
+                    gainNode.connect(this.audioCtx.destination);
+                    source.start();
+                    source.stop(this.audioCtx.currentTime + duration);
+                } catch (e) {}
+            }
+
+            makeDistortionCurve(amount) {
+                const samples = 44100;
+                const curve = new Float32Array(samples);
+                for (let i = 0; i < samples; ++i) {
+                    const x = (i * 2) / samples - 1;
+                    curve[i] = (Math.PI + amount) * x / (Math.PI + amount * Math.abs(x));
+                }
+                return curve;
+            }
+
+            playClickSound() {
+                if (!this.audioCtx) return;
+                try {
+                    const duration = 0.1;
+                    const bufferSize = this.audioCtx.sampleRate * duration;
+                    const buffer = this.audioCtx.createBuffer(1, bufferSize, this.audioCtx.sampleRate);
+                    const data = buffer.getChannelData(0);
+                    for (let i = 0; i < bufferSize; i++) {
+                        const t = i / bufferSize;
+                        data[i] = (Math.random() * 2 - 1) * Math.exp(-t * 20) * 0.7;
+                        if (i < bufferSize * 0.05) {
+                            data[i] = (Math.random() * 2 - 1) * 0.9;
+                        }
+                    }
+                    const source = this.audioCtx.createBufferSource();
+                    source.buffer = buffer;
+                    const gainNode = this.audioCtx.createGain();
+                    gainNode.gain.setValueAtTime(0.6, this.audioCtx.currentTime);
+                    gainNode.gain.exponentialRampToValueAtTime(0.001, this.audioCtx.currentTime + duration);
+                    source.connect(gainNode);
+                    gainNode.connect(this.audioCtx.destination);
+                    source.start();
+                    source.stop(this.audioCtx.currentTime + duration);
+                } catch (e) {}
+            }
+
+            playSpinSound() {
+                if (!this.audioCtx) return;
+                try {
+                    const duration = 0.8;
+                    const bufferSize = this.audioCtx.sampleRate * duration;
+                    const buffer = this.audioCtx.createBuffer(1, bufferSize, this.audioCtx.sampleRate);
+                    const data = buffer.getChannelData(0);
+                    for (let i = 0; i < bufferSize; i++) {
+                        const t = i / bufferSize;
+                        const frequency = 150 + t * 400;
+                        const osc = Math.sin(2 * Math.PI * frequency * t * 6);
+                        const noise = (Math.random() * 2 - 1) * 0.15;
+                        data[i] = (osc * 0.5 + noise) * Math.exp(-t * 2.5);
+                        if (t < 0.1) {
+                            data[i] += (Math.random() * 2 - 1) * 0.3 * (1 - t * 10);
+                        }
+                    }
+                    const source = this.audioCtx.createBufferSource();
+                    source.buffer = buffer;
+                    const gainNode = this.audioCtx.createGain();
+                    gainNode.gain.setValueAtTime(0.5, this.audioCtx.currentTime);
+                    gainNode.gain.exponentialRampToValueAtTime(0.001, this.audioCtx.currentTime + duration);
+                    const distortion = this.audioCtx.createWaveShaper();
+                    distortion.curve = this.makeDistortionCurve(20);
+                    source.connect(distortion);
+                    distortion.connect(gainNode);
+                    gainNode.connect(this.audioCtx.destination);
+                    source.start();
+                    source.stop(this.audioCtx.currentTime + duration);
+                } catch (e) {}
+            }
+        }
+
+        const sounds = new SoundEffects();
+
+        // ============================================================
+        //  PAGE SWITCHING
+        // ============================================================
+        function switchPage(page) {
+            sounds.playClickSound();
+            
+            document.querySelectorAll('.page').forEach(p => {
+                p.classList.remove('active');
+            });
+            
+            if (page === 'home') {
+                document.getElementById('pageHome').classList.add('active');
+            } else if (page === 'about') {
+                document.getElementById('pageAbout').classList.add('active');
+            } else if (page === 'notready') {
+                document.getElementById('pageNotReady').classList.add('active');
+            } else if (page === 'discord') {
+                document.getElementById('pageDiscord').classList.add('active');
+            } else if (page === 'twitch') {
+                document.getElementById('pageTwitch').classList.add('active');
+            } else if (page === 'youtube') {
+                document.getElementById('pageYouTube').classList.add('active');
+            } else if (page === 'tiktok') {
+                document.getElementById('pageTikTok').classList.add('active');
+            }
+            
+            const mainCard = document.getElementById('mainCard');
+            mainCard.classList.add('glitch-shake');
+            setTimeout(() => {
+                mainCard.classList.remove('glitch-shake');
+            }, 200);
+        }
+
+        // ============================================================
+        //  SOCIAL LINKS (Home page buttons)
+        // ============================================================
+        const socialLinks = [
+            {
+                icon: 'fab fa-discord',
+                label: 'Discord',
+                page: 'discord'
+            },
+            {
+                icon: 'fab fa-twitch',
+                label: 'Twitch',
+                page: 'twitch'
+            },
+            {
+                icon: 'fab fa-youtube',
+                label: 'YouTube',
+                page: 'youtube'
+            },
+            {
+                icon: 'fab fa-tiktok',
+                label: 'TikTok',
+                page: 'tiktok'
+            }
+        ];
+
+        const container = document.getElementById('socialLinks');
+
+        socialLinks.forEach(link => {
+            const button = document.createElement('button');
+            button.className = 'social-link';
+            button.setAttribute('aria-label', link.label);
+            button.onclick = () => switchPage(link.page);
+            
+            button.addEventListener('click', (e) => {
+                sounds.playClickSound();
+            });
+
+            const icon = document.createElement('i');
+            icon.className = link.icon;
+
+            button.appendChild(icon);
+            container.appendChild(button);
+        });
+
+        // Join button click sound
+        document.getElementById('joinButton').addEventListener('click', (e) => {
+            sounds.playClickSound();
+        });
+
+        // ============================================================
+        //  GLITCH EFFECT
+        // ============================================================
+        const glitchOverlay = document.getElementById('glitchOverlay');
+        const mainCard = document.getElementById('mainCard');
+
+        function triggerGlitch() {
+            sounds.playGlitchSound();
+            glitchOverlay.classList.add('active');
+            
+            const numVerticalLines = Math.floor(Math.random() * 4) + 2;
+            for (let i = 0; i < numVerticalLines; i++) {
+                const line = document.createElement('div');
+                line.className = 'glitch-vertical-line';
+                const randomX = Math.random() * 100;
+                line.style.left = randomX + '%';
+                line.style.height = (Math.random() * 60 + 20) + '%';
+                line.style.animationDuration = (Math.random() * 0.6 + 0.4) + 's';
+                line.style.animationDelay = (Math.random() * 0.3) + 's';
+                line.style.background = `rgba(255, 0, 0, ${Math.random() * 0.15 + 0.05})`;
+                glitchOverlay.appendChild(line);
+                setTimeout(() => line.remove(), 1500);
+            }
+
+            const numBars = Math.floor(Math.random() * 6) + 3;
+            for (let i = 0; i < numBars; i++) {
+                const bar = document.createElement('div');
+                bar.className = 'glitch-bar';
+                const randomY = Math.random() * 100;
+                bar.style.top = randomY + '%';
+                bar.style.height = (Math.random() * 4 + 1) + 'px';
+                bar.style.animationDuration = (Math.random() * 0.3 + 0.1) + 's';
+                bar.style.background = `rgba(255, 0, 0, ${Math.random() * 0.15 + 0.05})`;
+                glitchOverlay.appendChild(bar);
+                setTimeout(() => bar.remove(), 500);
+            }
+
+            const colorGlitch = document.createElement('div');
+            colorGlitch.className = 'glitch-color';
+            glitchOverlay.appendChild(colorGlitch);
+            setTimeout(() => colorGlitch.remove(), 200);
+
+            mainCard.classList.add('glitch-shake');
+            setTimeout(() => mainCard.classList.remove('glitch-shake'), 200);
+
+            setTimeout(() => glitchOverlay.classList.remove('active'), 500);
+        }
+
+        // ============================================================
+        //  FLYING CONTROLLER
+        // ============================================================
+        function spawnFlyingController() {
+            sounds.playSpinSound();
+            
+            const controller = document.createElement('div');
+            controller.className = 'flying-controller';
+            controller.innerHTML = '<i class="fas fa-gamepad"></i>';
+            
+            const startX = Math.random() * 100;
+            const startY = Math.random() * 100;
+            controller.style.left = startX + '%';
+            controller.style.top = startY + '%';
+            
+            const size = Math.random() * 2.5 + 2.5;
+            controller.style.fontSize = size + 'rem';
+            
+            const colors = ['#ff0000', '#ff3333', '#cc0000'];
+            const randomColor = colors[Math.floor(Math.random() * colors.length)];
+            controller.style.color = randomColor;
+            
+            const rotation = Math.random() * 720 + 360;
+            
+            const directions = [
+                { dx: 1, dy: 0 }, { dx: -1, dy: 0 }, { dx: 0, dy: 1 }, { dx: 0, dy: -1 },
+                { dx: 1, dy: 1 }, { dx: -1, dy: 1 }, { dx: 1, dy: -1 }, { dx: -1, dy: -1 }
+            ];
+            const direction = directions[Math.floor(Math.random() * directions.length)];
+            
+            const duration = 2 + Math.random() * 1.5;
+            controller.style.animation = 'none';
+            document.body.appendChild(controller);
+            
+            controller.animate([
+                { transform: `translate(0, 0) scale(0.5) rotate(0deg)`, opacity: 0 },
+                { transform: `translate(${direction.dx * 30}%, ${direction.dy * 30}%) scale(1.2) rotate(${rotation * 0.3}deg)`, opacity: 1, offset: 0.2 },
+                { transform: `translate(${direction.dx * 60}%, ${direction.dy * 60}%) scale(1) rotate(${rotation * 0.7}deg)`, opacity: 1, offset: 0.6 },
+                { transform: `translate(${direction.dx * 120}%, ${direction.dy * 120}%) scale(0.8) rotate(${rotation}deg)`, opacity: 0 }
+            ], {
+                duration: duration * 1000,
+                easing: 'ease-in-out'
+            }).onfinish = () => controller.remove();
+            
+            const trail = document.createElement('div');
+            trail.className = 'controller-trail';
+            trail.style.left = startX + '%';
+            trail.style.top = startY + '%';
+            trail.style.width = size * 20 + 'px';
+            trail.style.height = size * 20 + 'px';
+            trail.style.background = `radial-gradient(circle, ${randomColor}20, transparent 70%)`;
+            trail.style.borderRadius = '50%';
+            trail.style.animation = `fadeTrail ${duration * 0.8}s ease-out forwards`;
+            document.body.appendChild(trail);
+            
+            const trailStyle = document.createElement('style');
+            trailStyle.textContent = `
+                @keyframes fadeTrail {
+                    0% { opacity: 0.5; transform: scale(0.5); }
+                    50% { opacity: 0.3; transform: scale(1.5); }
+                    100% { opacity: 0; transform: scale(2); }
+                }
+            `;
+            document.head.appendChild(trailStyle);
+            
+            setTimeout(() => {
+                trail.remove();
+                trailStyle.remove();
+            }, duration * 1000);
+        }
+
+        // ============================================================
+        //  RANDOM EVENT SCHEDULER
+        // ============================================================
+        function scheduleRandomEvent() {
+            const delay = (Math.random() * 35 + 10) * 1000;
+            setTimeout(() => {
+                const events = [];
+                if (Math.random() < 0.7) events.push('glitch');
+                if (Math.random() < 0.6) events.push('controller');
+                if (events.length === 0) events.push('glitch', 'controller');
+                events.forEach(event => {
+                    if (event === 'glitch') setTimeout(() => triggerGlitch(), Math.random() * 300);
+                    if (event === 'controller') setTimeout(() => spawnFlyingController(), Math.random() * 500);
+                });
+                scheduleRandomEvent();
+            }, delay);
+        }
+
+        scheduleRandomEvent();
+
+        setTimeout(() => {
+            triggerGlitch();
+            setTimeout(() => spawnFlyingController(), 800);
+        }, 5000);
+    </script>
+
+</body>
+</html>
